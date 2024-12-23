@@ -23,7 +23,15 @@ func NewUserAPI(ur *repository.UserRepository) *UserAPI {
 	}
 }
 
-// GetUsers returns all users
+
+// GetUsers godoc
+// @Summary Get all users
+// @Description Get a list of all users
+// @Tags users
+// @Produce json
+// @Success 200 {array} models.User
+// @Failure 500 {object} map[string]string
+// @Router /users [get]
 func (api *UserAPI) GetUsers(c echo.Context) error {
 	users, err := api.UserRepository.GetAllUsers()
 	fmt.Printf("Users: %v\n", users)
@@ -33,7 +41,17 @@ func (api *UserAPI) GetUsers(c echo.Context) error {
 	return c.JSON(http.StatusOK, users)
 }
 
-// CreateUser creates a new user
+// CreateUser godoc
+// @Summary Create a new user
+// @Description Create a new user with the given details
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param user body models.User true "User object"
+// @Success 201 {object} models.User
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /users [post]
 func (api *UserAPI) CreateUser(c echo.Context) error {
 	var user models.User
 	if err := c.Bind(&user); err != nil {
@@ -47,7 +65,18 @@ func (api *UserAPI) CreateUser(c echo.Context) error {
 	return c.JSON(http.StatusCreated, map[string]string{"message": "User created successfully"})
 }
 
-// UpdateUser updates a user
+// UpdateUser godoc
+// @Summary Update an existing user
+// @Description Update an existing user with the given details
+// @Tags users
+// @Accept json
+// @Produce json
+// @Param id path int true "User ID"
+// @Param user body models.User true "User object"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /users/{id} [put]
 func (api *UserAPI) UpdateUser(c echo.Context) error {
 	var user models.User
 	if err := c.Bind(&user); err != nil {
@@ -68,7 +97,15 @@ func (api *UserAPI) UpdateUser(c echo.Context) error {
 }
 
 
-// DeleteUser deletes a user
+// DeleteUser godoc
+// @Summary Delete an existing user
+// @Description Delete an existing user with the given ID
+// @Tags users
+// @Param id path int true "User ID"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} map[string]string
+// @Failure 500 {object} map[string]string
+// @Router /users/{id} [delete]
 func (api *UserAPI) DeleteUser(c echo.Context) error {
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

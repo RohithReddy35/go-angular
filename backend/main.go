@@ -7,8 +7,26 @@ import (
 	"github.com/RohithReddy35/go-angular/internal/repository"
 	"github.com/RohithReddy35/go-angular/internal/api"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+
+	_ "github.com/RohithReddy35/go-angular/docs" // Import Swagger docs
+	"github.com/swaggo/echo-swagger"             // Swagger handler
 )
 
+// @title User Management API
+// @version 1.0
+// @description This is a sample CRUD application with Go and Echo framework.
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API Support
+// @contact.url http://www.swagger.io/support
+// @contact.email support@swagger.io
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host localhost:8080
+// @BasePath /
 func main() {
 	fmt.Println("Hello, World!")
 
@@ -18,7 +36,17 @@ func main() {
 	repo := repository.NewUserRepository(db.DB)
 
 	e := echo.New()
+
+	// Middleware
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+
+	// Swagger documentation route
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
+
+	// Register API routes
 	api.RegisterRoutes(e, repo)
 	
+	// Start server
 	e.Logger.Fatal(e.Start(":8080"))
 }
