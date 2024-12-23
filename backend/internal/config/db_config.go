@@ -23,7 +23,7 @@ func GetDBConfig() *DBConfig {
 		Port:     "5432",
 		User:     "postgres",
 		Password: os.Getenv("DB_PASSWORD"),
-		DBName:   "postgres",
+		DBName:   "users_db",
 	}
 }
 
