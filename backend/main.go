@@ -7,10 +7,15 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/swaggo/echo-swagger"
+
+	"github.com/RohithReddy35/go-angular/internal/db"
 )
 
 func main() {
 	fmt.Println("Hello, World!")
+
+	db.InitDB()
+	defer db.DB.Close()
 
 	e := echo.New()
 	e.Use(middleware.Logger())
