@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>{{ data.isEdit ? 'Edit User' : 'Create User' }}</h2>
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="fill">
+    <mat-label>Username</mat-label>
+    <input matInput formControlName="user_name" />
+    <mat-error *ngIf="userForm.get('user_name')?.hasError('required')">Name is required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Email</mat-label>
+    <input matInput formControlName="email" />
+    <mat-error *ngIf="userForm.get('email')?.hasError('required')">Email is required</mat-error>
+    <mat-error *ngIf="userForm.get('email')?.hasError('email')">Invalid email format</mat-error>
+  </mat-form-field>
+
+  <div mat-dialog-actions>
+    <button mat-button type="button" mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" [disabled]="userForm.invalid">
+      {{ data.isEdit ? 'Update' : 'Create' }}
+    </button>
+  </div>
+</form>

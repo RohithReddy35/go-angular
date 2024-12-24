@@ -217,9 +217,13 @@ const docTemplate = `{
     "definitions": {
         "models.User": {
             "type": "object",
+            "required": [
+                "email",
+                "user_name"
+            ],
             "properties": {
                 "created_at": {
-                    "description": "Password  string ` + "`" + `json:\"password\" sql:\"password\"` + "`" + `",
+                    "description": "Password  string ` + "`" + `json:\"password\" sql:\"password\" validate:\"required,min=6,max=50\"` + "`" + `",
                     "type": "string"
                 },
                 "email": {
@@ -232,7 +236,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "user_name": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 50,
+                    "minLength": 3
                 }
             }
         }

@@ -1,0 +1,17 @@
+<mat-toolbar color="primary">
+  <span>User Management</span>
+</mat-toolbar>
+
+<div class="content">
+  <router-outlet></router-outlet>
+</div>
+
+<button
+  mat-fab
+  color="accent"
+  class="create-user-button"
+  aria-label="Create User"
+  (click)="openCreateDialog()"
+>
+  <mat-icon>add</mat-icon>
+</button>

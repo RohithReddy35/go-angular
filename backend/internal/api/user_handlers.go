@@ -6,10 +6,13 @@ import (
 	"strconv"
 
 	"github.com/labstack/echo/v4"
+	"github.com/go-playground/validator/v10"
 
 	"github.com/RohithReddy35/go-angular/internal/models"
 	"github.com/RohithReddy35/go-angular/internal/repository"
 )
+
+var validate = validator.New()
 
 // UserAPI is a struct that holds the UserRepository
 type UserAPI struct {
@@ -58,7 +61,15 @@ func (api *UserAPI) CreateUser(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
 	}
 
+	// Validate the input
+	if err := validate.Struct(user); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
+	}
+
 	if err := api.UserRepository.CreateUser(&user); err != nil {
+		if err.Error() == "user_name already exists" {
+			return c.JSON(http.StatusConflict, map[string]string{"error": "user_name already exists"})
+		}
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
 	}
 
@@ -80,6 +91,11 @@ func (api *UserAPI) CreateUser(c echo.Context) error {
 func (api *UserAPI) UpdateUser(c echo.Context) error {
 	var user models.User
 	if err := c.Bind(&user); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
+	}
+
+	// Validate the input
+	if err := validate.Struct(user); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
 	}
 

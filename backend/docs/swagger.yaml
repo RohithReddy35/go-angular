@@ -3,7 +3,7 @@ definitions:
   models.User:
     properties:
       created_at:
-        description: Password  string `json:"password" sql:"password"`
+        description: Password  string `json:"password" sql:"password" validate:"required,min=6,max=50"`
         type: string
       email:
         type: string
@@ -12,7 +12,12 @@ definitions:
       updated_at:
         type: string
       user_name:
+        maxLength: 50
+        minLength: 3
         type: string
+    required:
+    - email
+    - user_name
     type: object
 host: localhost:8080
 info:

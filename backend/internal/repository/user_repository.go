@@ -3,6 +3,9 @@ package repository
 import (
 	"database/sql"
 	"errors"
+	"fmt"
+	"log"
+	// "strconv"
 	"time"
 
 	"github.com/RohithReddy35/go-angular/internal/models"
@@ -70,7 +73,15 @@ func (ur *UserRepository) CreateUser(user *models.User) error {
 
 // UpdateUser updates a user in the database
 func (ur *UserRepository) UpdateUser(user *models.User) error {
-	query := ur.QueryBuilder.Update("users").Set("username", user.UserName).Set("email", user.Email).Set("updated_at", time.Now()).Where("id = ?", user.ID).Suffix("RETURNING id, created_at, updated_at")
+	updatedDate := time.Now().Format("2006-01-02 15:04:05")
+	query := ur.QueryBuilder.Update("users").Set("username", user.UserName).Set("email", user.Email).Set("updated_at", updatedDate).Where("id = ?", user.ID).Suffix("RETURNING id, created_at, updated_at")
+	log.Printf("Query: %v\n", query)
+	fmt.Printf("Query: %v\n", query)
+
+	// Print the query on to the console
+	fmt.Printf("Query: %v\n", query)
+
+
 
 	_, err := query.RunWith(ur.DB).Exec()
 	if err != nil {
